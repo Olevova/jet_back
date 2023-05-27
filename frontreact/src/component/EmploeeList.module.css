@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 20px 100px 20px;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background-color: yellow;
+  border-radius: 15px;
+  padding: 15px;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}

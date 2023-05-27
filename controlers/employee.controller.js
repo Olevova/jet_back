@@ -1,16 +1,18 @@
 const db = require('../db');
 const axios = require('axios');
 
-class UserController {
-  async createEmployee(req, res) {
+// хотів вирішити питання кодування в базі данних UTF8 WIN1251 
+const replaceUnsupportedChars = (text) => {
+  return text.replace(/\xC3\xA0/g, ' ');
+}; 
+// class UserController { зробив як клас, переробив на функції
+const  createEmployee = async (req, res) => {
     try {
       const teamMembers = req.body;
       console.log(teamMembers);
       await db.query('DELETE FROM person');
 
-      const replaceUnsupportedChars = (text) => {
-        return text.replace(/\xC3\xA0/g, ' ');
-      };
+      
 
       for (const { name, position, moto } of teamMembers) {
         const convertedName = replaceUnsupportedChars(name);
@@ -30,7 +32,7 @@ class UserController {
     }
   };
 
-  async getEmployee(req, res){
+  const  getEmployee = async(req, res) => {
     try {
     const employees = await db.query('SELECT id, name, position, moto FROM person');
     console.log(employees);
@@ -40,7 +42,8 @@ class UserController {
     res.status(500).json({ error: 'An error occurred' });
     }
   };
-  async getJetSite (req, res){
+//  звернення до сайта зробив через сервер як прокладку це вирішило помилку з cors
+ const  getJetSite = async(req, res) => {
     try {
       const response = await axios.get('https://jetup.digital/team');
       res.json(response.data);
@@ -48,6 +51,6 @@ class UserController {
       res.status(500).json({ error: 'An error occurred' });
     }
   };
-}
+// }
 
-module.exports = new UserController();
+module.exports = {getEmployee,getJetSite,createEmployee};
